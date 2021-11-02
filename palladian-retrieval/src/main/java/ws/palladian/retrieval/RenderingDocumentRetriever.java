@@ -3,6 +3,7 @@ package ws.palladian.retrieval;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -185,6 +186,10 @@ public class RenderingDocumentRetriever extends JsEnabledDocumentRetriever {
                 selector = patternStringEntry.getValue();
                 break;
             }
+        }
+
+        for (Cookie cookie : cookies) {
+            driver.manage().addCookie(cookie);
         }
 
         try {
@@ -433,6 +438,12 @@ public class RenderingDocumentRetriever extends JsEnabledDocumentRetriever {
 
     public RemoteWebDriver getDriver() {
         return driver;
+    }
+
+    @Override
+    public void clearCookies() {
+        super.clearCookies();
+        this.driver.manage().deleteAllCookies();
     }
 
     public static void main(String... args) throws HttpException {

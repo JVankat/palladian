@@ -1,5 +1,6 @@
 package ws.palladian.retrieval;
 
+import org.openqa.selenium.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -138,10 +139,15 @@ public class CascadingDocumentRetriever extends JsEnabledDocumentRetriever {
                     renderingDocumentRetriever.addRetrieverCallback(retrieverCallback);
                 }
 
+                for (Cookie cookie : cookies) {
+                    renderingDocumentRetriever.addCookie(cookie);
+                }
+
                 configure(renderingDocumentRetriever);
                 document = renderingDocumentRetriever.getWebDocument(url);
 
                 renderingDocumentRetriever.getRetrieverCallbacks().clear();
+                renderingDocumentRetriever.clearCookies();
 
                 goodDocument = isGoodDocument(document);
                 renderingDocumentRetrieverPool.recycle(renderingDocumentRetriever);
